@@ -15,9 +15,9 @@ app.use(cors());
 // Serve static files from the public directory
 app.use(express.static(join(__dirname, 'public')));
 
-// Handle all routes by serving index.html
+// Handle all routes by serving index.php
 app.get('*', (req, res) => {
-  res.sendFile(join(__dirname, 'public', 'index.html'));
+  res.sendFile(join(__dirname, 'public', 'index.php'));
 });
 
 app.listen(port, () => {
