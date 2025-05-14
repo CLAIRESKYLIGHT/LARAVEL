@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     nodejs \
-    npm
+    npm \
+    nginx
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -35,8 +36,11 @@ RUN npm run build
 # Set permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-# Expose port 9000
-EXPOSE 9000
+# Configure Nginx
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Start PHP-FPM
-CMD ["php-fpm"] 
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx and PHP-FPM
+CMD service nginx start && php-fpm 

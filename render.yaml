@@ -3,6 +3,7 @@ services:
     name: library-management
     env: docker
     dockerfilePath: ./Dockerfile
+    port: 80
     envVars:
       - key: APP_ENV
         value: production
