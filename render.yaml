@@ -1,9 +1,9 @@
 services:
   - type: web
     name: library-management
-    env: static
+    env: node
     buildCommand: npm install && npm run build
-    staticPublishPath: ./public
+    startCommand: php artisan serve --host=0.0.0.0 --port=$PORT
     envVars:
       - key: APP_ENV
         value: production
