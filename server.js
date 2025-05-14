@@ -1,17 +1,25 @@
-const { spawn } = require('child_process');
-const path = require('path');
+import express from 'express';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import cors from 'cors';
 
-// Start PHP server
-const php = spawn('php', ['artisan', 'serve', '--host=0.0.0.0', '--port=' + process.env.PORT]);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-php.stdout.on('data', (data) => {
-  console.log(`PHP Server: ${data}`);
+const app = express();
+const port = process.env.PORT || 3000;
+
+// Enable CORS
+app.use(cors());
+
+// Serve static files from the public directory
+app.use(express.static(join(__dirname, 'public')));
+
+// Handle all routes by serving index.html
+app.get('*', (req, res) => {
+  res.sendFile(join(__dirname, 'public', 'index.html'));
 });
 
-php.stderr.on('data', (data) => {
-  console.error(`PHP Server Error: ${data}`);
-});
-
-php.on('close', (code) => {
-  console.log(`PHP Server process exited with code ${code}`);
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 }); 
