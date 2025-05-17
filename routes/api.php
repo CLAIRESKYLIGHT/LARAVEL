@@ -28,7 +28,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/profile', [UserController::class, 'updateProfile']);
 
     // Books routes
-    Route::apiResource('books', BooksController::class);
+    Route::get('/books', [BooksController::class, 'index']);
+    Route::middleware('role:admin')->group(function () {
+        Route::post('/books', [BooksController::class, 'store']);
+        Route::put('/books/{book}', [BooksController::class, 'update']);
+        Route::delete('/books/{book}', [BooksController::class, 'destroy']);
+    });
 
     // Admin routes
     Route::middleware('admin')->group(function () {

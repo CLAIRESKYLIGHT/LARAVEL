@@ -22,9 +22,8 @@ class BookFactory extends Factory
             'author' => fake()->name(),
             'isbn' => fake()->isbn13(),
             'published_date' => fake()->date(),
-            'description' => fake()->paragraph(),
-            'available_copies' => fake()->numberBetween(1, 10),
-            'price' => fake()->randomFloat(2, 10, 100),
+            'quantity' => fake()->numberBetween(1, 10),
+            'category' => fake()->randomElement(['Fiction', 'Non-Fiction', 'Science Fiction', 'Biography', 'History', 'Children']),
         ];
     }
 } 

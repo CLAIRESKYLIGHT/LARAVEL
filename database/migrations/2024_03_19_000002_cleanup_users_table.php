@@ -17,8 +17,8 @@ return new class extends Migration
                 'email_verified_at',
                 'remember_token',
                 'password_reset_token',
-                'created_at',
-                'updated_at'
+                // 'created_at',
+                // 'updated_at'
             ];
 
             foreach ($columnsToDrop as $column) {

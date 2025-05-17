@@ -6,18 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        Schema::table('books', function (Blueprint $table) {
-            // Remove is_available column if it exists
-            if (Schema::hasColumn('books', 'is_available')) {
-                $table->dropColumn('is_available');
+        Schema::table('users', function (Blueprint $table) {
+            if (Schema::hasColumn('users', 'created_at')) {
+                $table->dropColumn('created_at');
             }
-            
-            // Remove timestamps if they exist
+            if (Schema::hasColumn('users', 'updated_at')) {
+                $table->dropColumn('updated_at');
+            }
+        });
+        Schema::table('books', function (Blueprint $table) {
             if (Schema::hasColumn('books', 'created_at')) {
                 $table->dropColumn('created_at');
             }
@@ -27,14 +26,12 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->timestamps();
+        });
         Schema::table('books', function (Blueprint $table) {
-            // Add back the columns if needed to rollback
-            $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
     }
