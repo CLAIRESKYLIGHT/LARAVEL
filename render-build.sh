@@ -10,7 +10,20 @@ apt-get install -y php8.2 php8.2-cli php8.2-common php8.2-curl php8.2-mbstring p
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
+# Set permissions
+chmod -R 777 storage bootstrap/cache
+
 # Install dependencies
 composer install --optimize-autoloader --no-dev
+
+# Generate application key
 php artisan key:generate
-php artisan migrate --force 
+
+# Run migrations
+php artisan migrate --force
+
+# Clear cache
+php artisan config:clear
+php artisan cache:clear
+php artisan route:clear
+php artisan view:clear 
