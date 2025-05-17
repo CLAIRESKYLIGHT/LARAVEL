@@ -18,9 +18,7 @@ return new class extends Migration
             $table->string('isbn')->unique();
             $table->date('published_date');
             $table->mediumText('description');
-            $table->boolean('is_available')->default(true);
-            $table->decimal('price', 8, 2)->default(0.00);
-            $table->timestamps();
+            $table->integer('available_copies')->default(0);
         });
     }
 

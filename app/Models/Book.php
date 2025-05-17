@@ -4,11 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Book extends Model
 {
     use HasFactory;
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +28,6 @@ class Book extends Model
         'published_date',
         'description',
         'available_copies',
-        'price',
     ];
 
     /**
@@ -32,14 +37,5 @@ class Book extends Model
      */
     protected $casts = [
         'published_date' => 'date',
-        'price' => 'decimal:2',
     ];
-
-    /**
-     * Get the transactions for the book.
-     */
-    public function transactions(): HasMany
-    {
-        return $this->hasMany(Transaction::class);
-    }
 } 

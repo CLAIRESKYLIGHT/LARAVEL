@@ -17,7 +17,7 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -29,11 +29,10 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var list<string>
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
     /**
@@ -57,6 +56,9 @@ class User extends Authenticatable
         return $this->hasMany(Transaction::class);
     }
 
+    /**
+     * Check if user is an admin
+     */
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
