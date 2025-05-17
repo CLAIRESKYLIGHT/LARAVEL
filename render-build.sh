@@ -13,12 +13,4 @@ mv composer.phar /usr/local/bin/composer
 # Install dependencies
 composer install --optimize-autoloader --no-dev
 php artisan key:generate
-php artisan migrate --force
-
-# Install Node.js and npm
-curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-apt-get install -y nodejs
-
-# Install frontend dependencies and build
-npm install
-npm run build 
+php artisan migrate --force 
