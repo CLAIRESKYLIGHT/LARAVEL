@@ -27,11 +27,14 @@ class AuthController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
+        // Check if this is the first user (to be admin)
+        $isFirstUser = User::count() === 0;
+        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'member', // Default role for new registrations
+            'role' => $isFirstUser ? 'admin' : 'member', // First user becomes admin, rest are members
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;

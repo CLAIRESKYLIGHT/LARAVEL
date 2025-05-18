@@ -29,8 +29,8 @@ class BooksController extends Controller
             'author' => 'required|string|max:255',
             'isbn' => 'required|string|unique:books',
             'published_date' => 'required|date',
-            'description' => 'required|string',
-            'available_copies' => 'required|integer|min:0',
+            'quantity' => 'required|integer|min:0',
+            'category' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -59,8 +59,8 @@ class BooksController extends Controller
             'author' => 'sometimes|required|string|max:255',
             'isbn' => 'sometimes|required|string|unique:books,isbn,' . $book->id,
             'published_date' => 'sometimes|required|date',
-            'description' => 'sometimes|required|string',
-            'available_copies' => 'sometimes|required|integer|min:0',
+            'quantity' => 'sometimes|required|integer|min:0',
+            'category' => 'sometimes|required|string|max:255',
         ]);
 
         if ($validator->fails()) {

@@ -29,20 +29,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Books routes
     Route::get('/books', [BooksController::class, 'index']);
-    Route::middleware('role:admin')->group(function () {
-        Route::post('/books', [BooksController::class, 'store']);
-        Route::put('/books/{book}', [BooksController::class, 'update']);
-        Route::delete('/books/{book}', [BooksController::class, 'destroy']);
-    });
+    Route::get('/books/{book}', [BooksController::class, 'show']);
+    Route::post('/books', [BooksController::class, 'store']);
+    Route::put('/books/{book}', [BooksController::class, 'update']);
+    Route::delete('/books/{book}', [BooksController::class, 'destroy']);
 
     // Admin routes
-    Route::middleware('admin')->group(function () {
-        // User management
-        Route::get('/admin/users', [AdminController::class, 'users']);
-        Route::post('/admin/users', [AdminController::class, 'createUser']);
-        Route::put('/admin/users/{user}', [AdminController::class, 'updateUser']);
-        Route::delete('/admin/users/{user}', [AdminController::class, 'deleteUser']);
-    });
+    Route::get('/admin/users', [AdminController::class, 'users']);
+    Route::post('/admin/users', [AdminController::class, 'createUser']);
+    Route::put('/admin/users/{user}', [AdminController::class, 'updateUser']);
+    Route::delete('/admin/users/{user}', [AdminController::class, 'deleteUser']);
 });
 
 // Simple test endpoint

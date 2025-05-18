@@ -13,11 +13,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
+        // Create admin user first
         User::create([
             'name' => 'Admin User',
             'email' => 'admin@library.com',
-            'password' => Hash::make('password123'),
+            'password' => Hash::make('admin123'),
             'role' => 'admin',
         ]);
 
@@ -36,7 +36,9 @@ class UserSeeder extends Seeder
             'role' => 'member',
         ]);
 
-        // Create additional random users
-        User::factory(5)->create();
+        // Create additional random users (all as members)
+        User::factory(5)->create([
+            'role' => 'member'
+        ]);
     }
 } 

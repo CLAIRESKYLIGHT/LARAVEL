@@ -15,8 +15,9 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $role): Response
     {
-        if (!$request->user() || $request->user()->role !== $role) {
-            return response()->json(['message' => 'Unauthorized. Insufficient permissions.'], 403);
+        // Allow all authenticated users to access all routes
+        if (!$request->user()) {
+            return response()->json(['message' => 'Unauthorized. Please login.'], 401);
         }
 
         return $next($request);

@@ -18,7 +18,7 @@ class AdminController extends Controller
      */
     public function users(): JsonResponse
     {
-        $users = User::with('transactions')->get();
+        $users = User::all();
         return response()->json(['data' => $users]);
     }
 
@@ -31,7 +31,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,user',
+            'role' => 'required|in:member',
         ]);
 
         if ($validator->fails()) {
@@ -42,7 +42,7 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role' => 'member',
         ]);
 
         return response()->json(['data' => $user], 201);
@@ -53,10 +53,14 @@ class AdminController extends Controller
      */
     public function updateUser(Request $request, User $user): JsonResponse
     {
+        if ($user->role === 'admin') {
+            return response()->json(['message' => 'Cannot modify admin user'], 403);
+        }
+
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'sometimes|required|in:admin,user',
+            'role' => 'sometimes|required|in:member',
         ]);
 
         if ($validator->fails()) {
@@ -72,6 +76,10 @@ class AdminController extends Controller
      */
     public function deleteUser(User $user): JsonResponse
     {
+        if ($user->role === 'admin') {
+            return response()->json(['message' => 'Cannot delete admin user'], 403);
+        }
+
         $user->delete();
         return response()->json(['message' => 'User deleted successfully']);
     }
@@ -93,16 +101,7 @@ class AdminController extends Controller
         $stats = [
             'total_users' => User::count(),
             'total_books' => Book::count(),
-            'total_transactions' => Transaction::count(),
-            'active_borrowings' => Transaction::where('type', 'borrow')
-                ->where('status', 'active')
-                ->count(),
-            'overdue_books' => Transaction::where('type', 'borrow')
-                ->where('status', 'active')
-                ->where('due_date', '<', now())
-                ->count(),
-            'total_fines' => Transaction::where('fine_amount', '>', 0)
-                ->sum('fine_amount'),
+            'total_members' => User::where('role', 'member')->count(),
         ];
 
         return response()->json(['data' => $stats]);
